@@ -9,19 +9,22 @@ export default function Contact() {
     const [result, setResult] = useState("");
     const [phone, setPhone] = useState("");
 
-    const onSubmit = async (event) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.target);
+
+        const formData = new FormData(event.currentTarget);
+        formData.append("phone", phone);
         formData.append("access_key", "62584c8b-c39a-401d-a545-ad909a27c115");
 
         const response = await fetch("https://api.web3forms.com/submit", {
             method: "POST",
-            body: formData
+            body: formData,
         });
 
         const data = await response.json();
         setResult(data.success ? "Success!" : "Error");
     };
+
 
     return (
         <>
@@ -90,9 +93,9 @@ export default function Contact() {
                             <PhoneInput
                                 country={"ua"}
                                 onlyCountries={["ua"]}
-                                disableDropdown={true}    
+                                disableDropdown={true}
                                 disableCountryCode={false}
-                                countryCodeEditable={false} 
+                                countryCodeEditable={false}
                                 value={phone}
                                 onChange={(value) => setPhone(value)}
                                 inputProps={{
